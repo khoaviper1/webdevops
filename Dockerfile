@@ -21,9 +21,7 @@ RUN a2enmod rewrite
 # Expose port 80 để truy cập ứng dụng
 EXPOSE 80
 
-CMD ["apache2-foreground"]
-
 # Thiết lập quyền sở hữu và quyền truy cập nếu cần thiết
-RUN  chown -R www-data:www-data /var/www/html
 RUN  chmod -R 777 /var/www/html
+
 CMD ["apache2-foreground"]
