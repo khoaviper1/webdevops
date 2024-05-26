@@ -6,7 +6,7 @@ RUN apt-get update -y && apt-get install -y libmariadb-dev
 RUN docker-php-ext-install pdo pdo_mysql
 
 # Sao chép mã nguồn ứng dụng vào thư mục làm việc
-COPY . /var/www/html
+COPY src/ /var/www/html/
 
 # Copy file cấu hình Apache
 COPY my-php-app.conf /etc/apache2/sites-available/
