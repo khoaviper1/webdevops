@@ -4,6 +4,8 @@ pipeline {
     environment {
         EC2_HOST = '34.207.58.41'  // Địa chỉ IP của máy EC2
     }
+
+    stages {
         stage('Deploy to EC2') {
             steps {
                 // Bước này để triển khai mã nguồn lên máy EC2
