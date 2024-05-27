@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = '35.175.128.19'  // Địa chỉ IP của máy EC2
+        EC2_HOST = '34.207.58.41'  // Địa chỉ IP của máy EC2
         SSH_KEY = credentials('ec2-ssh')  // Thay 'ec2-ssh' bằng ID của khóa SSH được lưu trong Jenkins Credentials
     }
         stage('Deploy to EC2') {
