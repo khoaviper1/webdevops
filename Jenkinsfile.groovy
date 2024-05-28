@@ -5,7 +5,15 @@ pipeline {
         EC2_HOST = '18.207.141.116'  // Địa chỉ IP của máy EC2
         DEST_PATH = '/var/www/html/'  // Thư mục đích trên EC2
     }
+    stage('Test PHP Environment') {
+            steps {
+                // Kiểm tra phiên bản PHP
+                sh 'php -v'
 
+                // Kiểm tra các extension PHP
+                sh 'php -m'
+            }
+    }
     stages {
         stage('Deploy to EC2') {
             steps {
