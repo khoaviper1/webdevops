@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = '18.207.141.116'  // Địa chỉ IP của máy EC2
+        EC2_HOST = '52.23.245.20'  // Địa chỉ IP của máy EC2
         DEST_PATH = '/var/www/html/'  // Thư mục đích trên EC2
     }
     stage('Test PHP Environment') {
