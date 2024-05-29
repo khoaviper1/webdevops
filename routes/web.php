@@ -3,6 +3,7 @@
 
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StreamingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Auth\ForgetPasswordManager;
@@ -36,6 +37,8 @@ Route::get('/token', function () {
 // });
 
 Route::get('/profile', [ProfileController::class, 'get_information'])->name('get_information');
+Route::get('/streamingtv/{id}', [StreamingController::class, 'streamingmovie'])->name('stream');
+Route::get('/streamingmv/{id}', [StreamingController::class, 'streamingmoviemv'])->name('streammv');
 
 Route::get('/search', [SearchController::class, 'showSearchPage'])->name('search.page');
 Route::get('/search/results', [SearchController::class, 'search']);
@@ -75,10 +78,11 @@ Route::get('/export-movie',[testController::class,'export_movie']);
 
 Route::get('/profile', [ProfileController::class, 'get_information']);
 
-// Route để hiển thị form chỉnh sửa profile
-Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+// // Route để hiển thị form chỉnh sửa profile
+// Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
 
-Route::post('/update-profile', [ProfileController::class, 'update'])->name('update-profile');
+Route::put('/update-profile', [ProfileController::class, 'update'])->name('profile.update');
+// Route::put('/update-profile', [ProfileController::class, 'update']);
 // Route để xóa tài khoản người dùng
 Route::post('/profile/delete', [ProfileController::class, 'destroy'])->name('profile.destroy');
 require __DIR__.'/auth.php';
@@ -100,9 +104,14 @@ Route::post("/reset-password", [ForgetPasswordManager::class, "resetPasswordPost
     ->name("reset.password.post");
 
 //Gemini AI
-Route::post('/only-text',[GeminiController::class,'only_text']);
+// Route::post('/only-text',[GeminiController::class,'only_text']);
 Route::post('/text-image',[GeminiController::class,'text_image']);
 
 Route::get('/movies/{id}', [ListFilmController::class, 'redirectToMovieDetail'])->name('movies.redirect');
-Route::get('/{name}', [MoviesController::class, 'show'])->name('detail');
+Route::get('/moviesmv/{id}', [ListFilmController::class, 'redirectToMovieDetail_movies'])->name('movies.redirectmovies');
 
+Route::get('/tv/{name}', [MoviesController::class, 'show'])->name('detail');
+Route::get('/mv/{id}', [MoviesController::class, 'showmovies'])->name('detailmovies');
+
+//  onclick="redirectTo('' . route('movies.redirectmovies', 168259}) . '')"></a>
+//  onclick="redirectTo('http://127.0.0.1:8000/movies/2')">

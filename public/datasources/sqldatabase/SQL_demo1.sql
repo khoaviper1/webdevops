@@ -1,4 +1,4 @@
-CREATE TABLE `User` (
+CREATE TABLE `user` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(50),
   `birthday` date,
@@ -14,18 +14,18 @@ CREATE TABLE `User` (
   `updated_at` datetime
 );
 
-ALTER TABLE User
+ALTER TABLE user
 ALTER COLUMN role_id SET DEFAULT 2;
 
 
-CREATE TABLE `User_role` (
+CREATE TABLE `user_role` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `role_type` varchar(255),
   `created_at` datetime,
   `updated_at` datetime
 );
 
-CREATE TABLE `User_credential` (
+CREATE TABLE `user_credential` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_id`integer,
   `email` varchar(50),
@@ -34,7 +34,7 @@ CREATE TABLE `User_credential` (
   `updated_at` datetime 
 );
 
-CREATE TABLE `User_deposit` (
+CREATE TABLE `user_deposit` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_id` integer,
   `total_money` integer,
@@ -43,7 +43,7 @@ CREATE TABLE `User_deposit` (
   `updated_at` datetime
 );
 
-CREATE TABLE `Deposit_detail` (
+CREATE TABLE `deposit_detail` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `deposit_id` integer,
   `total_money` integer,
@@ -53,7 +53,7 @@ CREATE TABLE `Deposit_detail` (
   `updated_at` datetime
 );
 
-CREATE TABLE `User_plan` (
+CREATE TABLE `user_plan` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `plan_type` varchar(50),
   `planstart_at` datetime,
@@ -62,7 +62,7 @@ CREATE TABLE `User_plan` (
   `updated_at` datetime
 );
 
-CREATE TABLE `User_playlist` (
+CREATE TABLE `user_playlist` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_id` integer,
   `playlist_detail_id` integer,
@@ -70,10 +70,10 @@ CREATE TABLE `User_playlist` (
   `updated_at` datetime
 );
 
-CREATE TABLE `Playlist_detail` (
+CREATE TABLE `playlist_detail` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `user_playlist_id` integer,
-  `movie_id` integer,
+  `episode_status` integer,
   `status` varchar(50),
   `currentime` integer,
   `currentepisode` integer,
@@ -81,7 +81,7 @@ CREATE TABLE `Playlist_detail` (
   `updated_at` datetime
 );
 
-CREATE TABLE `Movie` (
+CREATE TABLE `movie` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `category_id` integer,
   `specialgroup_id` integer,
@@ -90,32 +90,30 @@ CREATE TABLE `Movie` (
   `link_id` integer,
   `created_at` datetime,
   `updated_at` datetime,
-  --
   `rank` integer NOT NULL DEFAULT 0,
   `point` integer NOT NULL DEFAULT 0
 );
 
 
-CREATE TABLE `Movie_link` (
+CREATE TABLE `movie_link` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
+  `episode_status` integer,
   `poster_link` varchar(255),
-  `trailer_link` varchar(255),
   `movie_link` varchar(255),
-  --
   `rank_link` varchar(255) NULL
 );
 
-CREATE TABLE `MovieCategory` (
+CREATE TABLE `movieCategory` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100)
 );
 
-CREATE TABLE `SpecialGroup` (
+CREATE TABLE `specialgroup` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100)
 );
 
-CREATE TABLE `Voucher` (
+CREATE TABLE `voucher` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100),
   `voucherstart_date` datetime,
@@ -125,188 +123,188 @@ CREATE TABLE `Voucher` (
   `status` varchar(50)
 );
 
-ALTER TABLE `Playlist_detail` ADD FOREIGN KEY (`movie_id`) REFERENCES `Movie` (`id`);
+ALTER TABLE `playlist_detail` ADD FOREIGN KEY (`episode_status`) REFERENCES `movie` (`id`);
 
-ALTER TABLE `Playlist_detail` ADD FOREIGN KEY (`user_playlist_id`) REFERENCES `User_playlist` (`id`);
+ALTER TABLE `playlist_detail` ADD FOREIGN KEY (`user_playlist_id`) REFERENCES `user_playlist` (`id`);
 
-ALTER TABLE `User_playlist` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `user_playlist` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
-ALTER TABLE `User_deposit` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `user_deposit` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
-ALTER TABLE `User` ADD FOREIGN KEY (`role_id`) REFERENCES `User_role` (`id`);
+ALTER TABLE `user` ADD FOREIGN KEY (`role_id`) REFERENCES `user_role` (`id`);
 
-ALTER TABLE `User` ADD FOREIGN KEY (`plan_id`) REFERENCES `User_plan` (`id`);
+ALTER TABLE `user` ADD FOREIGN KEY (`plan_id`) REFERENCES `user_plan` (`id`);
 
-ALTER TABLE `Deposit_detail` ADD FOREIGN KEY (`deposit_id`) REFERENCES `User_deposit` (`id`);
+ALTER TABLE `deposit_detail` ADD FOREIGN KEY (`deposit_id`) REFERENCES `user_deposit` (`id`);
 
-ALTER TABLE `User_credential` ADD FOREIGN KEY (`user_id`) REFERENCES `User` (`id`);
+ALTER TABLE `user_credential` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
-ALTER TABLE `Movie` ADD FOREIGN KEY (`category_id`) REFERENCES `MovieCategory` (`id`);
+ALTER TABLE `movie` ADD FOREIGN KEY (`category_id`) REFERENCES `movieCategory` (`id`);
 
-ALTER TABLE `Movie` ADD FOREIGN KEY (`SpecialGroup_id`) REFERENCES `SpecialGroup` (`id`);
+ALTER TABLE `movie` ADD FOREIGN KEY (`specialgroup_id`) REFERENCES `specialgroup` (`id`);
 
-ALTER TABLE `Movie` ADD FOREIGN KEY (`link_id`) REFERENCES `Movie_link` (`id`);
+ALTER TABLE `movie` ADD FOREIGN KEY (`link_id`) REFERENCES `movie_link` (`id`);
 
-ALTER TABLE `User` ADD FOREIGN KEY (`discount_id`) REFERENCES `Voucher` (`id`);
+ALTER TABLE `user` ADD FOREIGN KEY (`discount_id`) REFERENCES `voucher` (`id`);
 
 
 -- Chèn dữ liệu mẫu
 
--- Chèn dữ liệu cho bảng User_role
-INSERT INTO User_role (role_type, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user_role
+INSERT INTO user_role (role_type, created_at, updated_at)
 VALUES ('Admin', NOW(), NOW()),
-       ('User', NOW(), NOW());
+       ('user', NOW(), NOW());
 
--- Chèn dữ liệu cho bảng User_plan
-INSERT INTO User_plan (plan_type, planstart_at, planend_at, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user_plan
+INSERT INTO user_plan (plan_type, planstart_at, planend_at, created_at, updated_at)
 VALUES ('Basic', NOW(), DATE_ADD(NOW(), INTERVAL 1 MONTH), NOW(), NOW()),
        ('Premium', NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR), NOW(), NOW());
 
--- Chèn dữ liệu cho bảng User
-INSERT INTO User (name, birthday, email, phoneNumber, address, avartar, role_id, plan_id, deposit_id, discount_id, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user
+INSERT INTO user (name, birthday, email, phoneNumber, address, avartar, role_id, plan_id, deposit_id, discount_id, created_at, updated_at)
 VALUES ('John Doe', '1990-05-15', 'john.doe@example.com', '1234567890', '123 Main St, City, Country', 'avatar1.jpg', 1, 1, 1, NULL, NOW(), NOW()),
        ('Jane Smith', '1985-08-25', 'jane.smith@example.com', '9876543210', '456 Elm St, Town, Country', 'avatar2.jpg', 2, 2, 2, NULL, NOW(), NOW());
 
--- Chèn dữ liệu cho bảng User_credential
-INSERT INTO User_credential (user_id,email, password, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user_credential
+INSERT INTO user_credential (user_id,email, password, created_at, updated_at)
 VALUES (1,'john.doe@example.com', 'password123', NOW(), NOW()),
        (2,'jane.smith@example.com', 'letmein', NOW(), NOW());
 
--- Chèn dữ liệu cho bảng User_deposit
-INSERT INTO User_deposit (user_id, total_money, deposit_detail_id, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user_deposit
+INSERT INTO user_deposit (user_id, total_money, deposit_detail_id, created_at, updated_at)
 VALUES (1, 100, 1, NOW(), NOW()),
        (2, 200, 2, NOW(), NOW());
 
--- Chèn dữ liệu cho bảng Deposit_detail
-INSERT INTO Deposit_detail (deposit_id, total_money, method, status, created_at, updated_at)
+-- Chèn dữ liệu cho bảng deposit_detail
+INSERT INTO deposit_detail (deposit_id, total_money, method, status, created_at, updated_at)
 VALUES (1, 100, 'Credit Card', 'Success', NOW(), NOW()),
        (2, 200, 'PayPal', 'Success', NOW(), NOW());
 
--- Chèn dữ liệu cho bảng Movie_link
-INSERT INTO Movie_link (poster_link, trailer_link, movie_link, rank_link)
+-- Chèn dữ liệu cho bảng movie_link
+INSERT INTO movie_link (poster_link, episode_status, movie_link, rank_link)
 VALUES 
-('datasources/filmphoto_[body]/filmphoto_[body]_1.png', 'https://www.youtube.com/watch?v=nvdSbuizTUA&pp=ygUgZ2nhu69hIGPGoW4gYsOjbyB0dXnhur90IHRyYWlsZXI%3D', 'https://www.youtube.com/watch?v=nvdSbuizTUA&pp=ygUgZ2nhu69hIGPGoW4gYsOjbyB0dXnhur90IHRyYWlsZXI%3D', 'datasources/imageranking/img1.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_2.png', 'https://www.youtube.com/watch?v=9SdYFYflVbw&pp=ygUlbuG7ryBsdeG6rXQgc8awIHdvbyB5b3VuZyB3b28gdHJhaWxlcg%3D%3D', 'https://www.youtube.com/watch?v=9SdYFYflVbw&pp=ygUlbuG7ryBsdeG6rXQgc8awIHdvbyB5b3VuZyB3b28gdHJhaWxlcg%3D%3D', 'datasources/imageranking/img2.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_3.png', 'trailer_link_3', 'movie_link_3', 'datasources/imageranking/img3.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_4.png', 'trailer_link_4', 'movie_link_4', 'datasources/imageranking/img4.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_5.png', 'trailer_link_5', 'movie_link_5', 'datasources/imageranking/img5.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_6.png', 'trailer_link_6', 'movie_link_6', 'datasources/imageranking/img6.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_7.png', 'trailer_link_7', 'movie_link_7', 'datasources/imageranking/img7.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_8.png', 'trailer_link_8', 'movie_link_8', 'datasources/imageranking/img8.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_9.png', 'trailer_link_9', 'movie_link_9', 'datasources/imageranking/img9.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_10.png', 'trailer_link_10', 'movie_link_10','datasources/imageranking/img10.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_11.png', 'trailer_link_11', 'movie_link_11','datasources/imageranking/img11.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_12.png', 'trailer_link_12', 'movie_link_12','datasources/imageranking/img12.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_13.png', 'trailer_link_13', 'movie_link_13','datasources/imageranking/img13.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_14.png', 'trailer_link_14', 'movie_link_14','datasources/imageranking/img14.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_15.png', 'trailer_link_15', 'movie_link_15','datasources/imageranking/img15.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_16.png', 'trailer_link_16', 'movie_link_16','datasources/imageranking/img16.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_17.png', 'trailer_link_17', 'movie_link_17','datasources/imageranking/img17.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_18.png', 'trailer_link_18', 'movie_link_18','datasources/imageranking/img18.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_19.png', 'trailer_link_19', 'movie_link_19','datasources/imageranking/img19.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_20.png', 'trailer_link_20', 'movie_link_20','datasources/imageranking/img20.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_21.png', 'trailer_link_21', 'movie_link_21','datasources/imageranking/img21.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_22.png', 'trailer_link_22', 'movie_link_22','datasources/imageranking/img22.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_23.png', 'trailer_link_23', 'movie_link_23','datasources/imageranking/img23.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_24.png', 'trailer_link_24', 'movie_link_24','datasources/imageranking/img24.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_25.png', 'trailer_link_25', 'movie_link_25','datasources/imageranking/img25.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_26.png', 'trailer_link_26', 'movie_link_26','datasources/imageranking/img26.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_27.png', 'trailer_link_27', 'movie_link_27','datasources/imageranking/img27.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_28.png', 'trailer_link_28', 'movie_link_28','datasources/imageranking/img28.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_29.png', 'trailer_link_29', 'movie_link_29','datasources/imageranking/img29.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_30.png', 'trailer_link_30', 'movie_link_30','datasources/imageranking/img30.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_31.png', 'trailer_link_31', 'movie_link_31','datasources/imageranking/img31.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_32.png', 'trailer_link_32', 'movie_link_32','datasources/imageranking/img32.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_33.png', 'trailer_link_33', 'movie_link_33','datasources/imageranking/img33.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_34.png', 'trailer_link_34', 'movie_link_34','datasources/imageranking/img34.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_35.png', 'trailer_link_35', 'movie_link_35','datasources/imageranking/img35.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_36.png', 'trailer_link_36', 'movie_link_36','datasources/imageranking/img36.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_37.png', 'trailer_link_37', 'movie_link_37','datasources/imageranking/img37.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_38.png', 'trailer_link_38', 'movie_link_38','datasources/imageranking/img38.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_39.png', 'trailer_link_39', 'movie_link_39','datasources/imageranking/img39.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_40.png', 'trailer_link_40', 'movie_link_40','datasources/imageranking/img40.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_41.png', 'trailer_link_41', 'movie_link_41','datasources/imageranking/img41.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_42.png', 'trailer_link_42', 'movie_link_42','datasources/imageranking/img42.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_43.png', 'trailer_link_43', 'movie_link_43','datasources/imageranking/img43.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_44.png', 'trailer_link_44', 'movie_link_44','datasources/imageranking/img44.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_45.png', 'trailer_link_45', 'movie_link_45','datasources/imageranking/img45.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_46.png', 'trailer_link_46', 'movie_link_46','datasources/imageranking/img46.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_47.png', 'trailer_link_47', 'movie_link_47','datasources/imageranking/img47.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_48.png', 'trailer_link_48', 'movie_link_48','datasources/imageranking/img48.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_49.png', 'trailer_link_49', 'movie_link_49','datasources/imageranking/img49.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_50.png', 'trailer_link_50', 'movie_link_50','datasources/imageranking/img50.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_51.png', 'trailer_link_51', 'movie_link_51','datasources/imageranking/img51.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_52.png', 'trailer_link_52', 'movie_link_52','datasources/imageranking/img52.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_53.png', 'trailer_link_53', 'movie_link_53','datasources/imageranking/img53.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_54.png', 'trailer_link_54', 'movie_link_54','datasources/imageranking/img54.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_55.png', 'trailer_link_55', 'movie_link_55','datasources/imageranking/img55.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_56.png', 'trailer_link_56', 'movie_link_56','datasources/imageranking/img56.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_57.png', 'trailer_link_57', 'movie_link_57','datasources/imageranking/img57.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_58.png', 'trailer_link_58', 'movie_link_58','datasources/imageranking/img58.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_59.png', 'trailer_link_59', 'movie_link_59','datasources/imageranking/img59.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_60.png', 'trailer_link_60', 'movie_link_60','datasources/imageranking/img60.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_61.png', 'trailer_link_61', 'movie_link_61','datasources/imageranking/img61.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_62.png', 'trailer_link_62', 'movie_link_62','datasources/imageranking/img62.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_63.png', 'trailer_link_63', 'movie_link_63','datasources/imageranking/img63.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_64.png', 'trailer_link_64', 'movie_link_64','datasources/imageranking/img64.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_65.png', 'trailer_link_65', 'movie_link_65','datasources/imageranking/img65.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_66.png', 'trailer_link_66', 'movie_link_66','datasources/imageranking/img66.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_67.png', 'trailer_link_67', 'movie_link_67','datasources/imageranking/img67.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_68.png', 'trailer_link_68', 'movie_link_68','datasources/imageranking/img68.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_69.png', 'trailer_link_69', 'movie_link_69','datasources/imageranking/img69.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_70.png', 'trailer_link_70', 'movie_link_70','datasources/imageranking/img70.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_71.png', 'trailer_link_71', 'movie_link_71','datasources/imageranking/img71.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_72.png', 'trailer_link_72', 'movie_link_72','datasources/imageranking/img72.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_73.png', 'trailer_link_73', 'movie_link_73','datasources/imageranking/img73.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_74.png', 'trailer_link_74', 'movie_link_74','datasources/imageranking/img74.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_75.png', 'trailer_link_75', 'movie_link_75','datasources/imageranking/img75.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_76.png', 'trailer_link_76', 'movie_link_76','datasources/imageranking/img76.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_77.png', 'trailer_link_77', 'movie_link_77','datasources/imageranking/img77.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_78.png', 'trailer_link_78', 'movie_link_78','datasources/imageranking/img78.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_79.png', 'trailer_link_79', 'movie_link_79','datasources/imageranking/img79.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_80.png', 'trailer_link_80', 'movie_link_80','datasources/imageranking/img80.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_81.png', 'trailer_link_81', 'movie_link_81','datasources/imageranking/img81.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_82.png', 'trailer_link_82', 'movie_link_82','datasources/imageranking/img82.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_83.png', 'trailer_link_83', 'movie_link_83','datasources/imageranking/img83.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_84.png', 'trailer_link_84', 'movie_link_84','datasources/imageranking/img84.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_85.png', 'trailer_link_85', 'movie_link_85','datasources/imageranking/img85.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_86.png', 'trailer_link_86', 'movie_link_86','datasources/imageranking/img86.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_87.png', 'trailer_link_87', 'movie_link_87','datasources/imageranking/img87.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_88.png', 'trailer_link_88', 'movie_link_88','datasources/imageranking/img88.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_89.png', 'trailer_link_89', 'movie_link_89','datasources/imageranking/img89.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_90.png', 'trailer_link_90', 'movie_link_90','datasources/imageranking/img90.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_91.png', 'trailer_link_91', 'movie_link_91','datasources/imageranking/img91.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_92.png', 'trailer_link_92', 'movie_link_92','datasources/imageranking/img92.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_93.png', 'trailer_link_93', 'movie_link_93','datasources/imageranking/img93.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_94.png', 'trailer_link_94', 'movie_link_94','datasources/imageranking/img94.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_95.png', 'trailer_link_95', 'movie_link_95','datasources/imageranking/img95.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_96.png', 'trailer_link_96', 'movie_link_96','datasources/imageranking/img96.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_97.png', 'trailer_link_97', 'movie_link_97','datasources/imageranking/img97.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_98.png', 'trailer_link_98', 'movie_link_98','datasources/imageranking/img98.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_99.png', 'trailer_link_99', 'movie_link_99','datasources/imageranking/img99.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_100.png', 'trailer_link_100', 'movie_link_100','datasources/imageranking/img100.jpg'),
-('datasources/filmphoto_[body]/filmphoto_[body]_101.png', 'trailer_link_101', 'movie_link_101','datasources/imageranking/img100.jpg');
+('datasources/filmphoto_[body]/filmphoto_[body]_1.png', 1, 'https://www.youtube.com/watch?v=nvdSbuizTUA&pp=ygUgZ2nhu69hIGPGoW4gYsOjbyB0dXnhur90IHRyYWlsZXI%3D', 'datasources/imageranking/img1.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_2.png', 2, 'https://www.youtube.com/watch?v=9SdYFYflVbw&pp=ygUlbuG7ryBsdeG6rXQgc8awIHdvbyB5b3VuZyB3b28gdHJhaWxlcg%3D%3D', 'datasources/imageranking/img2.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_3.png', 3, 'movie_link_3', 'datasources/imageranking/img3.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_4.png', 4, 'movie_link_4', 'datasources/imageranking/img4.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_5.png', 5, 'movie_link_5', 'datasources/imageranking/img5.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_6.png', 6, 'movie_link_6', 'datasources/imageranking/img6.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_7.png', 7, 'movie_link_7', 'datasources/imageranking/img7.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_8.png', 8, 'movie_link_8', 'datasources/imageranking/img8.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_9.png', 9, 'movie_link_9', 'datasources/imageranking/img9.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_10.png', 10, 'movie_link_10','datasources/imageranking/img10.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_11.png', 11, 'movie_link_11','datasources/imageranking/img11.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_12.png', 12, 'movie_link_12','datasources/imageranking/img12.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_13.png', 13, 'movie_link_13','datasources/imageranking/img13.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_14.png', 14, 'movie_link_14','datasources/imageranking/img14.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_15.png', 15, 'movie_link_15','datasources/imageranking/img15.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_16.png', 16, 'movie_link_16','datasources/imageranking/img16.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_17.png', 17, 'movie_link_17','datasources/imageranking/img17.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_18.png', 18, 'movie_link_18','datasources/imageranking/img18.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_19.png', 19, 'movie_link_19','datasources/imageranking/img19.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_20.png', 20, 'movie_link_20','datasources/imageranking/img20.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_21.png', 21, 'movie_link_21','datasources/imageranking/img21.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_22.png', 22, 'movie_link_22','datasources/imageranking/img22.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_23.png', 23, 'movie_link_23','datasources/imageranking/img23.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_24.png', 24, 'movie_link_24','datasources/imageranking/img24.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_25.png', 25, 'movie_link_25','datasources/imageranking/img25.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_26.png', 26, 'movie_link_26','datasources/imageranking/img26.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_27.png', 27, 'movie_link_27','datasources/imageranking/img27.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_28.png', 28, 'movie_link_28','datasources/imageranking/img28.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_29.png', 29, 'movie_link_29','datasources/imageranking/img29.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_30.png', 30, 'movie_link_30','datasources/imageranking/img30.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_31.png', 31, 'movie_link_31','datasources/imageranking/img31.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_32.png', 32, 'movie_link_32','datasources/imageranking/img32.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_33.png', 33, 'movie_link_33','datasources/imageranking/img33.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_34.png', 34, 'movie_link_34','datasources/imageranking/img34.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_35.png', 35, 'movie_link_35','datasources/imageranking/img35.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_36.png', 36, 'movie_link_36','datasources/imageranking/img36.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_37.png', 37, 'movie_link_37','datasources/imageranking/img37.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_38.png', 38, 'movie_link_38','datasources/imageranking/img38.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_39.png', 39, 'movie_link_39','datasources/imageranking/img39.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_40.png', 40, 'movie_link_40','datasources/imageranking/img40.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_41.png', 41, 'movie_link_41','datasources/imageranking/img41.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_42.png', 42, 'movie_link_42','datasources/imageranking/img42.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_43.png', 43, 'movie_link_43','datasources/imageranking/img43.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_44.png', 44, 'movie_link_44','datasources/imageranking/img44.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_45.png', 45, 'movie_link_45','datasources/imageranking/img45.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_46.png', 46, 'movie_link_46','datasources/imageranking/img46.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_47.png', 47, 'movie_link_47','datasources/imageranking/img47.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_48.png', 48, 'movie_link_48','datasources/imageranking/img48.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_49.png', 49, 'movie_link_49','datasources/imageranking/img49.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_50.png', 50, 'movie_link_50','datasources/imageranking/img50.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_51.png', 51, 'movie_link_51','datasources/imageranking/img51.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_52.png', 52, 'movie_link_52','datasources/imageranking/img52.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_53.png', 53, 'movie_link_53','datasources/imageranking/img53.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_54.png', 54, 'movie_link_54','datasources/imageranking/img54.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_55.png', 55, 'movie_link_55','datasources/imageranking/img55.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_56.png', 56, 'movie_link_56','datasources/imageranking/img56.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_57.png', 57, 'movie_link_57','datasources/imageranking/img57.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_58.png', 58, 'movie_link_58','datasources/imageranking/img58.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_59.png', 59, 'movie_link_59','datasources/imageranking/img59.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_60.png', 60, 'movie_link_60','datasources/imageranking/img60.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_61.png', 61, 'movie_link_61','datasources/imageranking/img61.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_62.png', 62, 'movie_link_62','datasources/imageranking/img62.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_63.png', 63, 'movie_link_63','datasources/imageranking/img63.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_64.png', 64, 'movie_link_64','datasources/imageranking/img64.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_65.png', 65, 'movie_link_65','datasources/imageranking/img65.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_66.png', 66, 'movie_link_66','datasources/imageranking/img66.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_67.png', 67, 'movie_link_67','datasources/imageranking/img67.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_68.png', 68, 'movie_link_68','datasources/imageranking/img68.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_69.png', 69, 'movie_link_69','datasources/imageranking/img69.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_70.png', 70, 'movie_link_70','datasources/imageranking/img70.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_71.png', 71, 'movie_link_71','datasources/imageranking/img71.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_72.png', 72, 'movie_link_72','datasources/imageranking/img72.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_73.png', 73, 'movie_link_73','datasources/imageranking/img73.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_74.png', 74, 'movie_link_74','datasources/imageranking/img74.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_75.png', 75, 'movie_link_75','datasources/imageranking/img75.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_76.png', 76, 'movie_link_76','datasources/imageranking/img76.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_77.png', 77, 'movie_link_77','datasources/imageranking/img77.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_78.png', 78, 'movie_link_78','datasources/imageranking/img78.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_79.png', 79, 'movie_link_79','datasources/imageranking/img79.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_80.png', 80, 'movie_link_80','datasources/imageranking/img80.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_81.png', 81, 'movie_link_81','datasources/imageranking/img81.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_82.png', 82, 'movie_link_82','datasources/imageranking/img82.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_83.png', 83, 'movie_link_83','datasources/imageranking/img83.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_84.png', 84, 'movie_link_84','datasources/imageranking/img84.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_85.png', 85, 'movie_link_85','datasources/imageranking/img85.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_86.png', 86, 'movie_link_86','datasources/imageranking/img86.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_87.png', 87, 'movie_link_87','datasources/imageranking/img87.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_88.png', 88, 'movie_link_88','datasources/imageranking/img88.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_89.png', 89, 'movie_link_89','datasources/imageranking/img89.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_90.png', 90, 'movie_link_90','datasources/imageranking/img90.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_91.png', 91, 'movie_link_91','datasources/imageranking/img91.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_92.png', 92, 'movie_link_92','datasources/imageranking/img92.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_93.png', 93, 'movie_link_93','datasources/imageranking/img93.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_94.png', 94, 'movie_link_94','datasources/imageranking/img94.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_95.png', 95, 'movie_link_95','datasources/imageranking/img95.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_96.png', 96, 'movie_link_96','datasources/imageranking/img96.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_97.png', 97, 'movie_link_97','datasources/imageranking/img97.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_98.png', 98, 'movie_link_98','datasources/imageranking/img98.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_99.png', 99, 'movie_link_99','datasources/imageranking/img99.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_100.png', 100, 'movie_link_100','datasources/imageranking/img100.jpg'),
+('datasources/filmphoto_[body]/filmphoto_[body]_101.png', 101, 'movie_link_101','datasources/imageranking/img100.jpg');
 
--- Chèn dữ liệu cho bảng MovieCategory
-INSERT INTO MovieCategory (name)
+-- Chèn dữ liệu cho bảng movieCategory
+INSERT INTO movieCategory (name)
 VALUES ('Action'),
        ('Comedy'),
        ('Drama');
 
--- Chèn dữ liệu cho bảng SpecialGroup
-INSERT INTO SpecialGroup (name)
+-- Chèn dữ liệu cho bảng specialgroup
+INSERT INTO specialgroup (name)
 VALUES ('New Releases'),
        ('Top Rated');
 
--- Chèn dữ liệu cho bảng Voucher
-INSERT INTO Voucher (name, voucherstart_date, voucherend_date, code, discount_percentage, status)
+-- Chèn dữ liệu cho bảng voucher
+INSERT INTO voucher (name, voucherstart_date, voucherend_date, code, discount_percentage, status)
 VALUES ('Spring Sale', NOW(), DATE_ADD(NOW(), INTERVAL 1 MONTH), 'SPRING2024', 20, 'Active'),
        ('Summer Discount', NOW(), DATE_ADD(NOW(), INTERVAL 2 MONTH), 'SUMMER2024', 15, 'Active');
 
 
--- Chèn dữ liệu cho bảng Movie
-INSERT INTO Movie (category_id, specialgroup_id, title, description, link_id, created_at, updated_at, point)
-VALUES (1, 1, 'Giữa cơn bão tuyết', '221112', 1, NOW(), NOW(),807),
+-- Chèn dữ liệu cho bảng movie
+INSERT INTO movie (category_id, specialgroup_id, title, description, link_id, created_at, updated_at, point)
+VALUES (1, 1, 'nữ hoàng nước mắt', '215720', 1, NOW(), NOW(),807),
 (1, 1, 'Nữ luật sư kỳ lạ', '197067', 2, NOW(), NOW(),182),
 (1, 1, 'Lấy danh nghĩa người nhà', '107329', 3, NOW(), NOW(),822),
 (1, 1, 'Hoàn hồn ALCHEMY OF SOULS', '135157', 4, NOW(), NOW(),644),
@@ -410,13 +408,13 @@ VALUES (1, 1, 'Giữa cơn bão tuyết', '221112', 1, NOW(), NOW(),807),
 
 
 
--- Chèn dữ liệu cho bảng User_playlist
-INSERT INTO User_playlist (user_id, playlist_detail_id, created_at, updated_at)
+-- Chèn dữ liệu cho bảng user_playlist
+INSERT INTO user_playlist (user_id, playlist_detail_id, created_at, updated_at)
 VALUES (1, 1, NOW(), NOW()),
        (2, 2, NOW(), NOW());
 
--- Chèn dữ liệu cho bảng Playlist_detail
-INSERT INTO Playlist_detail (user_playlist_id, movie_id, status, currentime, currentepisode, created_at, updated_at)
+-- Chèn dữ liệu cho bảng playlist_detail
+INSERT INTO playlist_detail (user_playlist_id, episode_status, status, currentime, currentepisode, created_at, updated_at)
 VALUES (1, 1, 'Watching', 120, 3, NOW(), NOW()),
        (2, 2, 'Paused', 90, 2, NOW(), NOW());
 
