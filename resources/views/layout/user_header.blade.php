@@ -6,6 +6,7 @@
     <title>Netflop</title>
     
     <link rel="shortcut icon" type="image/png" href="{{ asset('datasources/img/netflop.png') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('datasources/img/netflop.png') }}">
     
     <link rel="stylesheet" href="{{ asset('css/style_index.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/style_animation.css') }}" />
