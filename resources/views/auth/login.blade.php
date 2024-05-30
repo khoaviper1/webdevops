@@ -1,3 +1,7 @@
+<head>
+    <title>Netflop</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('datasources/img/netflop.png') }}">
+</head>
 @extends('layout')
 @section('content')
 <div class="container" style=" border-radius: 5px; 
