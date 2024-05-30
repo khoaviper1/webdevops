@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = '54.87.171.67'  // Địa chỉ IP của máy EC2
+        EC2_HOST = '18.207.2.58'  // Địa chỉ IP của máy EC2
     }
 
     stages {
