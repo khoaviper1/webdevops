@@ -2872,3 +2872,6 @@
 [2024-07-21 08:22:48] local.INFO: Mật khẩu từ người dùng: 123123  
 [2024-07-21 08:22:48] local.INFO: Mật khẩu đã băm trong cơ sở dữ liệu: $2y$12$K6a.vceB8NM52Oh6QGAAOey6x88/P3vyx34p9ClW/9Sp4fBxtFTXW  
 [2024-07-21 08:22:48] local.INFO: ROLE_ID : 2  
+[2024-07-21 10:07:51] local.INFO: Mật khẩu từ người dùng: 123123  
+[2024-07-21 10:07:51] local.INFO: Mật khẩu đã băm trong cơ sở dữ liệu: $2y$12$K6a.vceB8NM52Oh6QGAAOey6x88/P3vyx34p9ClW/9Sp4fBxtFTXW  
+[2024-07-21 10:07:51] local.INFO: ROLE_ID : 2  
