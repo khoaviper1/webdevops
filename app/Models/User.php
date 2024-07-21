@@ -1,6 +1,4 @@
-
 <?php
-
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -12,6 +10,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     protected $table = 'user';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,9 +19,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        // 'password',
         'birthday',
     ];
-
-    
 }

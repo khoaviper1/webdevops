@@ -1,6 +1,6 @@
 <?php
 
-
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StreamingController;
@@ -28,6 +28,7 @@ Route::get('/home',[testController::class,'home'])->middleware(EnsureTokenIsVali
 // Route::post("/test", function(){
 //     return response()->json(['text'=>'hello anh trai']);
 // });
+
 Route::get('/token', function () {
     return csrf_token(); 
 });
@@ -112,6 +113,14 @@ Route::get('/moviesmv/{id}', [ListFilmController::class, 'redirectToMovieDetail_
 
 Route::get('/tv/{name}', [MoviesController::class, 'show'])->name('detail');
 Route::get('/mv/{id}', [MoviesController::class, 'showmovies'])->name('detailmovies');
+Route::get('/db-check', function () {
+    try {
+        DB::connection()->getPdo();
+        return 'Database connection is working!';
+    } catch (\Exception $e) {
+        return 'Could not connect to the database. Error: ' . $e->getMessage();
+    }
+});
 
 //  onclick="redirectTo('' . route('movies.redirectmovies', 168259}) . '')"></a>
 //  onclick="redirectTo('http://127.0.0.1:8000/movies/2')">
